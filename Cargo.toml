@@ -1,0 +1,12 @@
+[package]
+name = "apollo-cli"
+version = "0.1.0"
+authors = ["Rob Hardwick <robhardwick@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+apollo = { path = "lib/apollo" }
+clap = "2.33.0"
+cpal = "0.10.0"
+failure = "0.1.5"
+serde_json = "1.0"
