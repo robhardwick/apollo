@@ -4,7 +4,10 @@ mod synth;
 mod track;
 
 use failure::Error;
-use rand::SeedableRng;
+use rand::{
+    RngCore,
+    SeedableRng,
+};
 use rand::rngs::SmallRng;
 
 use phrase::Phrase;
@@ -23,11 +26,14 @@ impl Apollo {
         let mut rng = SmallRng::seed_from_u64(config.seed);
         let preset = config.preset(preset)?;
 
-        let tracks: Vec<Track> = preset.tracks(&mut rng).into_iter().map(|(seed, track)| {
-            Track::new(
-                Phrase::new(track.phrase, seed, sample_rate),
-                Synth::new(track.synth, sample_rate)
-            )
+        let tracks: Vec<Track> = preset.tracks.iter().flat_map(|track| {
+            let mut rng = SmallRng::seed_from_u64(rng.next_u64());
+            (0..track.num.random(&mut rng)).map(move |_| {
+                Track::new(
+                    Phrase::new(track.phrase.clone(), rng.next_u64(), sample_rate),
+                    Synth::new(track.synth.clone(), sample_rate)
+                )
+            })
         }).collect();
         let size = tracks.len() as f32;
 
