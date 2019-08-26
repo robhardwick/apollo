@@ -1,5 +1,6 @@
 mod args;
-mod audio;
+mod play;
+mod record;
 mod text;
 
 use failure::Error;
@@ -13,8 +14,26 @@ pub fn main() -> Result<(), Error> {
     let args = Args::new()?;
 
     match args.output {
-        ArgsOutput::Text => text::run(args.config, args.preset, args.seed, args.sample_rate)?,
-        ArgsOutput::Audio => audio::run(args.config, args.preset, args.seed)?,
+        ArgsOutput::Play => play::run(
+            args.config,
+            args.preset,
+            args.seed
+        )?,
+        ArgsOutput::Record(filename) => record::run(
+            args.config,
+            args.preset,
+            args.seed,
+            args.sample_rate,
+            args.length,
+            &filename
+        )?,
+        ArgsOutput::Text => text::run(
+            args.config,
+            args.preset,
+            args.seed,
+            args.sample_rate,
+            args.length
+        )?,
     };
 
     Ok(())

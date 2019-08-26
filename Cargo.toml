@@ -9,5 +9,6 @@ apollo = { path = "lib/apollo" }
 clap = "2.33.0"
 cpal = "0.10.0"
 failure = "0.1.5"
+hound = "3.4.0"
 rand = "0.7.0"
 serde_json = "1.0"
