@@ -5,6 +5,8 @@ mod synth;
 mod rhythm;
 mod track;
 
+use std::fmt;
+
 use failure::Error;
 use rand::{
     RngCore,
@@ -22,6 +24,9 @@ pub use config::Config;
 
 #[derive(Debug)]
 pub struct Apollo {
+    seed: u64,
+    rhythm: Rhythm,
+    scale: Scale,
     tracks: Vec<Track>,
     size: f32,
 }
@@ -47,6 +52,9 @@ impl Apollo {
         let size = tracks.len() as f32;
 
         Ok(Apollo {
+            seed,
+            rhythm,
+            scale,
             tracks,
             size,
         })
@@ -61,5 +69,11 @@ impl Iterator for Apollo {
             .filter_map(|track| track.next())
             .sum();
         Some(sample / self.size)
+    }
+}
+
+impl fmt::Display for Apollo {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Seed: {}\nRhythm: {}\nScale: {}\nTracks: {}", self.seed, self.rhythm, self.scale, self.size)
     }
 }

@@ -25,6 +25,7 @@ pub fn run(config: Config, preset: String, seed: u64) -> Result<(), Error> {
     let sample_rate = format.sample_rate.0 as f32;
 
     let mut apollo = Apollo::new(config, preset, seed, sample_rate)?.into_iter();
+    println!("{}", apollo);
 
     event_loop.run(move |id, result| {
         let data = match result {

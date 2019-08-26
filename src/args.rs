@@ -81,9 +81,7 @@ impl Args {
         let preset = value_t!(matches, "preset", String).unwrap_or(DEFAULT_PRESET.to_string());
         let seed = if matches.is_present("seed-random") {
             let mut rng = thread_rng();
-            let seed: u64 = rng.gen();
-            println!("Generated seed: {}", seed);
-            seed
+            rng.gen()
         } else {
             value_t!(matches, "seed", u64).unwrap_or(config.seed)
         };

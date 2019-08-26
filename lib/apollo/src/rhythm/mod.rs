@@ -1,5 +1,7 @@
 mod error;
 
+use std::fmt;
+
 use rand::SeedableRng;
 use rand::rngs::SmallRng;
 use rand::distributions::{
@@ -21,6 +23,7 @@ pub struct Rhythm {
     sample_rate: f32,
     bpm: f32,
     beat: usize,
+    unit: f32,
     beat_length: usize,
     phrase_length: usize,
     lengths: Vec<usize>,
@@ -50,6 +53,7 @@ impl Rhythm {
             sample_rate,
             bpm,
             beat,
+            unit,
             beat_length,
             phrase_length,
             lengths,
@@ -70,5 +74,11 @@ impl Rhythm {
         }
 
         phrase
+    }
+}
+
+impl fmt::Display for Rhythm {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}/{} at {}bpm", self.beat, self.unit, self.bpm as u8)
     }
 }

@@ -53,7 +53,7 @@
         }]
     }],
     "scales": [{
-        "id": "c_major",
+        "name": "C Major",
         "tags": ["western", "major", "diatonic"],
         "notes": [
             261.63,
@@ -65,7 +65,7 @@
             493.88
         ]
     },{
-        "id": "a_major",
+        "name": "A Major",
         "tags": ["western", "major", "diatonic"],
         "notes": [
             220.00,
@@ -77,7 +77,7 @@
             415.30
         ]
     },{
-        "id": "blues_major",
+        "name": "Blues Major",
         "tags": ["western", "major", "hexatonic"],
         "notes": [
             261.63,
@@ -88,7 +88,7 @@
             440.00
         ]
     },{
-        "id": "blues_minor",
+        "name": "Blues Minor",
         "tags": ["western", "minor", "hexatonic"],
         "notes": [
             261.63,
