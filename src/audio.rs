@@ -13,7 +13,7 @@ use apollo::{
     Config,
 };
 
-pub fn run(config: Config, preset: String) -> Result<(), Error> {
+pub fn run(config: Config, preset: String, seed: u64) -> Result<(), Error> {
     let host = cpal::default_host();
     let device = host.default_output_device().ok_or(err_msg("Unable to get default output device"))?;
     let format = device.default_output_format()?;
@@ -24,7 +24,7 @@ pub fn run(config: Config, preset: String) -> Result<(), Error> {
     let channels = format.channels as usize;
     let sample_rate = format.sample_rate.0 as f32;
 
-    let mut apollo = Apollo::new(config, preset, sample_rate)?.into_iter();
+    let mut apollo = Apollo::new(config, preset, seed, sample_rate)?.into_iter();
 
     event_loop.run(move |id, result| {
         let data = match result {

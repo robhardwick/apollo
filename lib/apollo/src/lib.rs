@@ -25,8 +25,8 @@ pub struct Apollo {
 }
 
 impl Apollo {
-    pub fn new(config: Config, preset: String, sample_rate: f32) -> Result<Self, Error> {
-        let mut rng = SmallRng::seed_from_u64(config.seed);
+    pub fn new(config: Config, preset: String, seed: u64, sample_rate: f32) -> Result<Self, Error> {
+        let mut rng = SmallRng::seed_from_u64(seed);
         let preset = config.preset(preset)?;
         let rhythm = Rhythm::new(&preset.rhythm, rng.next_u64(), sample_rate)?;
 

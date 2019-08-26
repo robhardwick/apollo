@@ -13,8 +13,8 @@ pub fn main() -> Result<(), Error> {
     let args = Args::new()?;
 
     match args.output {
-        ArgsOutput::Text => text::run(args.config, args.preset, args.sample_rate)?,
-        ArgsOutput::Audio => audio::run(args.config, args.preset)?,
+        ArgsOutput::Text => text::run(args.config, args.preset, args.seed, args.sample_rate)?,
+        ArgsOutput::Audio => audio::run(args.config, args.preset, args.seed)?,
     };
 
     Ok(())
