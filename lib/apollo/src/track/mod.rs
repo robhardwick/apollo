@@ -1,6 +1,7 @@
 use crate::phrase::Phrase;
 use crate::synth::Synth;
 
+#[derive(Debug)]
 pub struct Track {
     clock: f32,
     phrase: Phrase,

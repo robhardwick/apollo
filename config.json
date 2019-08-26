@@ -1,26 +1,34 @@
 {
-    "seed": 4,
+    "seed": 8,
     "presets": [{
         "id": "default",
+        "rhythm": {
+            "bpm": {
+                "min": 60,
+                "max": 180
+            },
+            "beat": {
+                "min": 3,
+                "max": 14
+            },
+            "unit": [2, 4, 8],
+            "weight": "shorter"
+        },
         "tracks": [{
             "type": "melody",
             "num": {
                 "min": 1,
-                "max": 5
+                "max": 3
             },
             "phrase": {
                 "length": {
                     "min": 1,
-                    "max": 10
+                    "max": 4
                 },
                 "note": {
                     "frequency": {
                         "min": 200.0,
                         "max": 800.0
-                    },
-                    "length": {
-                        "min": 1.0,
-                        "max": 5.0
                     },
                     "adsr": {
                         "amplitude": {
@@ -29,10 +37,6 @@
                         },
                         "attack": {
                             "min": 0.05,
-                            "max": 0.4
-                        },
-                        "sustain": {
-                            "min": 0.2,
                             "max": 0.4
                         },
                         "release": {

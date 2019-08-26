@@ -31,14 +31,13 @@ impl Note {
         }
     }
 
-    pub fn from_config(config: ConfigNote, seed: u64, sample_rate: f32) -> Self {
+    pub fn from_config(config: &ConfigNote, seed: u64, length: f32) -> Self {
         let mut rng = SmallRng::seed_from_u64(seed);
 
-        let length = config.length.random(&mut rng) * sample_rate;
         Note::new(
             length,
             config.frequency.random(&mut rng),
-            ADSR::from_config(config.adsr, rng.next_u64(), length)
+            ADSR::from_config(&config.adsr, rng.next_u64(), length)
         )
     }
 }

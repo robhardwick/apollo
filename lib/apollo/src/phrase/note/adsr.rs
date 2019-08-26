@@ -27,19 +27,19 @@ impl ADSR {
         }
     }
 
-    pub fn from_config(config: ConfigADSR, seed: u64, length: f32) -> Self {
+    pub fn from_config(config: &ConfigADSR, seed: u64, length: f32) -> Self {
         let mut rng = SmallRng::seed_from_u64(seed);
 
         let amplitude = config.amplitude.random(&mut rng);
         let attack = config.attack.random(&mut rng);
-        let sustain = attack + config.sustain.random(&mut rng);
-        let release = sustain + config.release.random(&mut rng);
+        let release = config.release.random(&mut rng);
+        let sustain = 1. - attack - release;
         Self::new(
             amplitude,
             length,
             attack,
-            sustain,
-            release
+            attack + sustain,
+            attack + sustain + release
         )
     }
 }

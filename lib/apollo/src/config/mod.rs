@@ -1,6 +1,8 @@
+pub mod choice;
 pub mod phrase;
 pub mod preset;
 pub mod synth;
+pub mod rhythm;
 pub mod track;
 
 mod error;

@@ -3,12 +3,13 @@ use std::f32::consts::PI;
 use crate::config::synth::ConfigSynth;
 use crate::phrase::note::NoteSample;
 
+#[derive(Debug)]
 pub struct Synth {
     sample_rate: f32,
 }
 
 impl Synth {
-    pub fn new(_config: ConfigSynth, sample_rate: f32) -> Self {
+    pub fn new(_config: &ConfigSynth, sample_rate: f32) -> Self {
         Synth {
             sample_rate,
         }

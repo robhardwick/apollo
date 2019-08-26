@@ -1,6 +1,7 @@
 mod config;
 mod phrase;
 mod synth;
+mod rhythm;
 mod track;
 
 use failure::Error;
@@ -11,11 +12,13 @@ use rand::{
 use rand::rngs::SmallRng;
 
 use phrase::Phrase;
+use rhythm::Rhythm;
 use synth::Synth;
 use track::Track;
 
 pub use config::Config;
 
+#[derive(Debug)]
 pub struct Apollo {
     tracks: Vec<Track>,
     size: f32,
@@ -25,15 +28,16 @@ impl Apollo {
     pub fn new(config: Config, preset: String, sample_rate: f32) -> Result<Self, Error> {
         let mut rng = SmallRng::seed_from_u64(config.seed);
         let preset = config.preset(preset)?;
+        let rhythm = Rhythm::new(&preset.rhythm, rng.next_u64(), sample_rate)?;
 
         let tracks: Vec<Track> = preset.tracks.iter().flat_map(|track| {
             let mut rng = SmallRng::seed_from_u64(rng.next_u64());
-            (0..track.num.random(&mut rng)).map(move |_| {
+            (0..track.num.random(&mut rng)).map(|_| {
                 Track::new(
-                    Phrase::new(track.phrase.clone(), rng.next_u64(), sample_rate),
-                    Synth::new(track.synth.clone(), sample_rate)
+                    Phrase::new(&track.phrase, rng.next_u64(), &rhythm),
+                    Synth::new(&track.synth, sample_rate)
                 )
-            })
+            }).collect::<Vec<_>>()
         }).collect();
         let size = tracks.len() as f32;
 
