@@ -1,11 +1,5 @@
 mod adsr;
 
-use rand::{
-    RngCore,
-    SeedableRng
-};
-use rand::rngs::SmallRng;
-
 use crate::config::phrase::note::ConfigNote;
 use adsr::ADSR;
 
@@ -31,13 +25,11 @@ impl Note {
         }
     }
 
-    pub fn from_config(config: &ConfigNote, seed: u64, length: f32) -> Self {
-        let mut rng = SmallRng::seed_from_u64(seed);
-
+    pub fn from_config(config: &ConfigNote, seed: u64, length: f32, frequency: f32) -> Self {
         Note::new(
             length,
-            config.frequency.random(&mut rng),
-            ADSR::from_config(&config.adsr, rng.next_u64(), length)
+            frequency,
+            ADSR::from_config(&config.adsr, seed, length)
         )
     }
 }

@@ -14,6 +14,7 @@
             "unit": [2, 4, 8],
             "weight": "shorter"
         },
+        "scale": ["western"],
         "tracks": [{
             "type": "melody",
             "num": {
@@ -50,5 +51,52 @@
 
             }
         }]
+    }],
+    "scales": [{
+        "id": "c_major",
+        "tags": ["western", "major", "diatonic"],
+        "notes": [
+            261.63,
+            293.66,
+            329.63,
+            349.23,
+            392.00,
+            440.00,
+            493.88
+        ]
+    },{
+        "id": "a_major",
+        "tags": ["western", "major", "diatonic"],
+        "notes": [
+            220.00,
+            246.94,
+            277.18,
+            293.66,
+            329.63,
+            369.99,
+            415.30
+        ]
+    },{
+        "id": "blues_major",
+        "tags": ["western", "major", "hexatonic"],
+        "notes": [
+            261.63,
+            293.66,
+            311.13,
+            329.63,
+            392.00,
+            440.00
+        ]
+    },{
+        "id": "blues_minor",
+        "tags": ["western", "minor", "hexatonic"],
+        "notes": [
+            261.63,
+            311.13,
+            349.23,
+            369.99,
+            392.00,
+            466.16
+        ]
     }]
 }

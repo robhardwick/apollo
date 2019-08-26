@@ -32,7 +32,7 @@ impl Rhythm {
         let mut rng = SmallRng::seed_from_u64(seed);
         let bpm = config.bpm.random(&mut rng) as f32;
         let beat = config.beat.random(&mut rng) as usize;
-        let unit = config.unit.random(&mut rng).ok_or(RhythmError::UnitChoose)? as f32;
+        let unit = *config.unit.random(&mut rng).ok_or(RhythmError::UnitChoose)? as f32;
 
         let beat_length = ((SECONDS_PER_MINUTE / bpm) * (BASE_BEAT_UNIT / unit) * sample_rate) as usize;
         let phrase_length = beat_length * beat;

@@ -8,6 +8,7 @@ use rand::rngs::SmallRng;
 
 use crate::config::phrase::ConfigPhrase;
 use crate::rhythm::Rhythm;
+use crate::scale::Scale;
 use note::{
     Note,
     NoteSample,
@@ -22,14 +23,17 @@ pub struct Phrase {
 }
 
 impl Phrase {
-    pub fn new(config: &ConfigPhrase, seed: u64, rhythm: &Rhythm) -> Self {
+    pub fn new(config: &ConfigPhrase, seed: u64, rhythm: &Rhythm, scale: &Scale) -> Self {
         let mut rng = SmallRng::seed_from_u64(seed);
 
         let notes: Vec<Note> = (0..config.length.random(&mut rng)).flat_map(|_| {
             let mut rng = SmallRng::seed_from_u64(rng.next_u64());
-            rhythm.phrase(&mut rng).into_iter().map(move |length| {
-                Note::from_config(&config.note, rng.next_u64(), length).into_iter()
-            })
+            rhythm.phrase(&mut rng)
+                .into_iter()
+                .zip(scale.clone().into_iter())
+                .map(move |(length, frequency)| {
+                    Note::from_config(&config.note, rng.next_u64(), length, frequency).into_iter()
+                })
         }).collect();
         let length = notes.len();
 
