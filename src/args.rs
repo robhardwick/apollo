@@ -15,8 +15,8 @@ use rand::{
 
 use apollo::Config;
 
-const DEFAULT_CONFIG: &'static str = "config.json";
-const DEFAULT_PRESET: &'static str = "default";
+const DEFAULT_CONFIG: &str = "config.json";
+const DEFAULT_PRESET: &str = "default";
 const DEFAULT_SAMPLE_RATE: f32 = 44100.;
 
 pub struct Args {
