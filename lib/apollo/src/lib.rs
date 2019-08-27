@@ -44,7 +44,11 @@
 //!                     }
 //!                 }
 //!             },
-//!             "synth": {}
+//!             "synth": {
+//!                 "num": {"min": 1, "max": 3},
+//!                 "offset": {"min": 0.0, "max": 100.0},
+//!                 "signal": ["sine", "saw", "square"]
+//!             }
 //!         }]
 //!     }],
 //!     "scales": [{
@@ -104,6 +108,7 @@ pub use config::rhythm::ConfigRhythm;
 pub use config::rhythm::ConfigRhythmWeight;
 pub use config::scale::ConfigScale;
 pub use config::synth::ConfigSynth;
+pub use config::synth::ConfigSynthSignal;
 pub use config::track::ConfigTrack;
 
 /// An iterator that produces audio samples
@@ -127,15 +132,17 @@ impl Apollo {
         let scale_config = config.scale(&preset, &mut rng)?;
         let scale = Scale::new(&scale_config, rng.next_u64())?;
 
-        let tracks: Vec<Track> = preset.tracks.iter().flat_map(|track| {
-            let mut rng = SmallRng::seed_from_u64(rng.next_u64());
-            (0..track.num.random(&mut rng)).map(|_| {
-                Track::new(
+        let tracks = preset.tracks.iter()
+            .flat_map(|track| (0..track.num.random(&mut rng)).map(move |_| track))
+            .collect::<Vec<_>>()
+            .iter()
+            .map(|track| {
+                Ok(Track::new(
                     Phrase::new(&track.phrase, rng.next_u64(), &rhythm, &scale),
-                    Synth::new(&track.synth, sample_rate)
-                )
-            }).collect::<Vec<_>>()
-        }).collect();
+                    Synth::new(&track.synth, rng.next_u64(), sample_rate)?
+                ))
+            })
+            .collect::<Result<Vec<_>, Error>>()?;
         let size = tracks.len() as f32;
 
         Ok(Apollo {
