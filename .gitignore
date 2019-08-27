@@ -1,4 +1,6 @@
 .DS_Store
 /.vscode
 /target
+/lib/apollo/Cargo.lock
+/lib/apollo/target
 **/*.rs.bk

@@ -40,7 +40,7 @@ impl Args {
         let matches = App::new("Apollo")
             .version("0.1")
             .author("Rob Hardwick <robhardwick@gmail.com>")
-            .about("Algorithmically generated music")
+            .about("Generative musical composition and synthesis")
             .arg(Arg::with_name("config")
                 .short("c")
                 .long("config")

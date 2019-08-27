@@ -25,7 +25,7 @@ pub struct Rhythm {
     beat: usize,
     unit: f32,
     beat_length: usize,
-    phrase_length: usize,
+    bar_length: usize,
     lengths: Vec<usize>,
     distribution: WeightedIndex<usize>,
 }
@@ -38,7 +38,7 @@ impl Rhythm {
         let unit = *config.unit.random(&mut rng).ok_or(RhythmError::UnitChoose)? as f32;
 
         let beat_length = ((SECONDS_PER_MINUTE / bpm) * (BASE_BEAT_UNIT / unit) * sample_rate) as usize;
-        let phrase_length = beat_length * beat;
+        let bar_length = beat_length * beat;
 
         let lengths = 1..beat;
         let weights: Vec<usize> = match config.weight {
@@ -55,19 +55,19 @@ impl Rhythm {
             beat,
             unit,
             beat_length,
-            phrase_length,
+            bar_length,
             lengths,
             distribution,
         })
     }
 
-    pub fn phrase(&self, rng: &mut SmallRng) -> Vec<f32> {
+    pub fn bar(&self, rng: &mut SmallRng) -> Vec<f32> {
         let mut current_length = 0usize;
         let mut phrase: Vec<f32> = Vec::with_capacity(self.beat);
 
-        while current_length < self.phrase_length  {
+        while current_length < self.bar_length  {
             let beat = self.lengths[self.distribution.sample(rng)] * self.beat_length;
-            if self.phrase_length >= current_length + beat {
+            if self.bar_length >= current_length + beat {
                 phrase.push(beat as f32);
                 current_length += beat;
             }

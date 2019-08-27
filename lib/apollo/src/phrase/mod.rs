@@ -28,7 +28,7 @@ impl Phrase {
 
         let notes: Vec<Note> = (0..config.length.random(&mut rng)).flat_map(|_| {
             let mut rng = SmallRng::seed_from_u64(rng.next_u64());
-            rhythm.phrase(&mut rng)
+            rhythm.bar(&mut rng)
                 .into_iter()
                 .zip(scale.clone().into_iter())
                 .map(move |(length, frequency)| {

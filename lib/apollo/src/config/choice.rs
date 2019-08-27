@@ -2,10 +2,11 @@ use rand::rngs::SmallRng;
 use rand::seq::SliceRandom;
 use serde::Deserialize;
 
+/// A list of values from which one can be randomly selected
 #[derive(Clone, Debug, Deserialize)]
-pub struct Choice<T>(Vec<T>);
+pub struct ConfigChoice<T>(Vec<T>);
 
-impl<T> Choice<T> {
+impl<T> ConfigChoice<T> {
     pub fn random(&self, rng: &mut SmallRng) -> Option<&T> {
         self.0.choose(rng)
     }
