@@ -1,3 +1,5 @@
+use std::fmt;
+
 use crate::phrase::Phrase;
 use crate::synth::Synth;
 
@@ -24,5 +26,11 @@ impl Iterator for Track {
     fn next(&mut self) -> Option<f32> {
         self.clock += 1.;
         self.phrase.next().and_then(|note| Some(self.synth.sample(self.clock, note)))
+    }
+}
+
+impl fmt::Display for Track {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}{}", self.synth, self.phrase)
     }
 }

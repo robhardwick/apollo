@@ -168,6 +168,10 @@ impl Iterator for Apollo {
 
 impl fmt::Display for Apollo {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Seed: {}\nRhythm: {}\nScale: {}\nTracks: {}", self.seed, self.rhythm, self.scale, self.size)
+        write!(f, "Seed: {}\nRhythm: {}\nScale: {}\n", self.seed, self.rhythm, self.scale)?;
+        for (index, track) in self.tracks.iter().enumerate() {
+            write!(f, "Track {}: {}\n", index + 1, track)?;
+        }
+        Ok(())
     }
 }

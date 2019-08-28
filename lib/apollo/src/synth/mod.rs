@@ -1,6 +1,8 @@
 mod error;
 mod signal;
 
+use std::fmt;
+
 use rand::SeedableRng;
 use rand::rngs::SmallRng;
 
@@ -43,5 +45,14 @@ impl Synth {
             .map(|signal| signal.sample(phase))
             .sum();
         (samples / self.size) * note.amplitude
+    }
+}
+
+impl fmt::Display for Synth {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for signal in self.signals.iter() {
+            write!(f, "{} ", signal)?;
+        }
+        Ok(())
     }
 }
