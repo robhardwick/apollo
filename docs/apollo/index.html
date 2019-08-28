@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `apollo` crate."><meta name="keywords" content="rust, rustlang, rust-lang, apollo"><title>apollo - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../apollo/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate apollo</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all apollo's items</p></a><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'apollo', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/apollo/lib.rs.html#1-173' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>apollo</a></span></h1><div class='docblock'><h1 id="apollo" class="section-header"><a href="#apollo">Apollo</a></h1>
+<p>A library for generative musical composition and synthesis. Each generated song is an instance
+of the <a href="struct.Apollo.html">Apollo</a> struct which is initialised with the following data:</p>
+<ul>
+<li>A <a href="struct.Config.html">Config</a></li>
+<li>A <a href="struct.ConfigPreset.html">ConfigPreset</a></li>
+<li>A seed value for the random number generator</li>
+<li>A sample rate</li>
+</ul>
+<p>An example invocation that outputs 2 seconds of samples to the console:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">use</span> <span class="ident">serde_json</span>;
+<span class="kw">use</span> <span class="ident">apollo</span>::{
+    <span class="ident">Apollo</span>,
+    <span class="ident">Config</span>,
+};
+ 
+<span class="comment">// Create basic configuration from JSON</span>
+<span class="kw">let</span> <span class="ident">config</span>: <span class="ident">Config</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="string">r#&quot;{
+    &quot;seed&quot;: 1,
+    &quot;presets&quot;: [{
+        &quot;id&quot;: &quot;default&quot;,
+        &quot;rhythm&quot;: {
+            &quot;bpm&quot;: 60,
+            &quot;beat&quot;: 4,
+            &quot;unit&quot;: [4],
+            &quot;weight&quot;: &quot;shorter&quot;
+        },
+        &quot;scale&quot;: [&quot;major&quot;],
+        &quot;tracks&quot;: [{
+            &quot;num&quot;: 1,
+            &quot;phrase&quot;: {
+                &quot;length&quot;: 2,
+                &quot;note&quot;: {
+                    &quot;frequency&quot;: 220.0,
+                    &quot;adsr&quot;: {
+                        &quot;amplitude&quot;: 1.0,
+                        &quot;attack&quot;: 0.4,
+                        &quot;release&quot;: 0.2
+                    }
+                }
+            },
+            &quot;synth&quot;: {
+                &quot;num&quot;: 4,
+                &quot;offset&quot;: 0.0,
+                &quot;signal&quot;: [&quot;sine&quot;, &quot;saw&quot;]
+            }
+        }]
+    }],
+    &quot;scales&quot;: [{
+        &quot;name&quot;: &quot;C Major&quot;,
+        &quot;tags&quot;: [&quot;major&quot;],
+        &quot;notes&quot;: [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88]
+    }]
+}&quot;#</span>)<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">preset</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;default&quot;</span>);
+<span class="kw">let</span> <span class="ident">sample_rate</span> <span class="op">=</span> <span class="number">44100</span>;
+<span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">sample_rate</span>; <span class="comment">// 2 seconds</span>
+<span class="kw">let</span> <span class="ident">seed</span> <span class="op">=</span> <span class="number">1</span>;
+ 
+<span class="comment">// Create sample iterator using &quot;default&quot; configuration preset</span>
+<span class="kw">let</span> <span class="ident">apollo</span> <span class="op">=</span> <span class="ident">Apollo</span>::<span class="ident">new</span>(<span class="ident">config</span>, <span class="ident">preset</span>, <span class="ident">seed</span>, <span class="ident">sample_rate</span> <span class="kw">as</span> <span class="ident">f32</span>)<span class="question-mark">?</span>.<span class="ident">into_iter</span>();
+ 
+<span class="comment">// Output 2 seconds worth of clock and sample values to console</span>
+<span class="kw">for</span> (<span class="ident">clock</span>, <span class="ident">value</span>) <span class="kw">in</span> (<span class="number">0</span>..<span class="ident">length</span>).<span class="ident">zip</span>(<span class="ident">apollo</span>) {
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{} {}&quot;</span>, <span class="ident">clock</span>, <span class="ident">value</span>);
+}</pre></div>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table><tr class='module-item'><td><a class="struct" href="struct.Apollo.html" title='apollo::Apollo struct'>Apollo</a></td><td class='docblock-short'><p>An iterator that produces audio samples</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Config.html" title='apollo::Config struct'>Config</a></td><td class='docblock-short'><p>The configuration for song generation</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigADSR.html" title='apollo::ConfigADSR struct'>ConfigADSR</a></td><td class='docblock-short'><p>An attack, decay, sustain, release envelope configuration</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigChoice.html" title='apollo::ConfigChoice struct'>ConfigChoice</a></td><td class='docblock-short'><p>A list of values from which one can be randomly selected</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigNote.html" title='apollo::ConfigNote struct'>ConfigNote</a></td><td class='docblock-short'><p>A musical note configuration</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigPhrase.html" title='apollo::ConfigPhrase struct'>ConfigPhrase</a></td><td class='docblock-short'><p>A musical phrase configuration consisting of a series of notes in one or more bars</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigPreset.html" title='apollo::ConfigPreset struct'>ConfigPreset</a></td><td class='docblock-short'><p>A song preset configuration</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigRhythm.html" title='apollo::ConfigRhythm struct'>ConfigRhythm</a></td><td class='docblock-short'><p>A musical rhythm configuration</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigScale.html" title='apollo::ConfigScale struct'>ConfigScale</a></td><td class='docblock-short'><p>A musical scale configuration</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigSynth.html" title='apollo::ConfigSynth struct'>ConfigSynth</a></td><td class='docblock-short'><p>A synthesizer configuration</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ConfigTrack.html" title='apollo::ConfigTrack struct'>ConfigTrack</a></td><td class='docblock-short'><p>A track configuration consisting of a musical phrase and instrument</p>
+</td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
+<table><tr class='module-item'><td><a class="enum" href="enum.ConfigError.html" title='apollo::ConfigError enum'>ConfigError</a></td><td class='docblock-short'><p>A configuration error</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.ConfigRange.html" title='apollo::ConfigRange enum'>ConfigRange</a></td><td class='docblock-short'><p>A range of values from <a href="struct.ConfigRange.html#structfield.min">min</a> to
+<a href="struct.ConfigRange.html#structfield.max">max</a> that a value can be randomly generated within
+or, alternatively, a single fixed value that will always be used</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.ConfigRhythmWeight.html" title='apollo::ConfigRhythmWeight enum'>ConfigRhythmWeight</a></td><td class='docblock-short'><p>A note length weighting configuration for this rhythm</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.ConfigSynthSignal.html" title='apollo::ConfigSynthSignal enum'>ConfigSynthSignal</a></td><td class='docblock-short'><p>A synthesizer signal type configuration</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../";window.currentCrate = "apollo";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>
