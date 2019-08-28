@@ -25,29 +25,29 @@
 //!     "presets": [{
 //!         "id": "default",
 //!         "rhythm": {
-//!             "bpm": {"min": 60, "max": 120},
-//!             "beat": {"min": 3, "max": 5},
-//!             "unit": [4, 8],
+//!             "bpm": 60,
+//!             "beat": 4,
+//!             "unit": [4],
 //!             "weight": "shorter"
 //!         },
 //!         "scale": ["major"],
 //!         "tracks": [{
-//!             "num": {"min": 1, "max": 3},
+//!             "num": 1,
 //!             "phrase": {
-//!                 "length": {"min": 1, "max": 4},
+//!                 "length": 2,
 //!                 "note": {
-//!                     "frequency": {"min": 200.0, "max": 800.0},
+//!                     "frequency": 220.0,
 //!                     "adsr": {
-//!                         "amplitude": {"min": 0.5, "max": 1.0},
-//!                         "attack": {"min": 0.05, "max": 0.4},
-//!                         "release": {"min": 0.1, "max": 0.2}
+//!                         "amplitude": 1.0,
+//!                         "attack": 0.4,
+//!                         "release": 0.2
 //!                     }
 //!                 }
 //!             },
 //!             "synth": {
-//!                 "num": {"min": 1, "max": 3},
-//!                 "offset": {"min": 0.0, "max": 100.0},
-//!                 "signal": ["sine", "saw", "square"]
+//!                 "num": 4,
+//!                 "offset": 0.0,
+//!                 "signal": ["sine", "saw"]
 //!             }
 //!         }]
 //!     }],
@@ -133,7 +133,7 @@ impl Apollo {
         let scale = Scale::new(&scale_config, rng.next_u64())?;
 
         let tracks = preset.tracks.iter()
-            .flat_map(|track| (0..track.num.random(&mut rng)).map(move |_| track))
+            .flat_map(|track| (0..track.num.get(&mut rng)).map(move |_| track))
             .collect::<Vec<_>>()
             .iter()
             .map(|track| {

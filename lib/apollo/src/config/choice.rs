@@ -7,7 +7,7 @@ use serde::Deserialize;
 pub struct ConfigChoice<T>(Vec<T>);
 
 impl<T> ConfigChoice<T> {
-    pub fn random(&self, rng: &mut SmallRng) -> Option<&T> {
+    pub fn get(&self, rng: &mut SmallRng) -> Option<&T> {
         self.0.choose(rng)
     }
 }

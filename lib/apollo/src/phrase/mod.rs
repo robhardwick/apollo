@@ -26,7 +26,7 @@ impl Phrase {
     pub fn new(config: &ConfigPhrase, seed: u64, rhythm: &Rhythm, scale: &Scale) -> Self {
         let mut rng = SmallRng::seed_from_u64(seed);
 
-        let notes: Vec<Note> = (0..config.length.random(&mut rng)).flat_map(|_| {
+        let notes: Vec<Note> = (0..config.length.get(&mut rng)).flat_map(|_| {
             let mut rng = SmallRng::seed_from_u64(rng.next_u64());
             rhythm.bar(&mut rng)
                 .into_iter()

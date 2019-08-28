@@ -41,7 +41,7 @@ impl Config {
     /// [scale](struct.ConfigPreset.html#structfield.scale) and then randomly chooses a scale from
     /// the set of all scales that have the tag.
     pub fn scale(&self, preset: &ConfigPreset, rng: &mut SmallRng) -> Result<&ConfigScale, ConfigError> {
-        let tag = preset.scale.random(rng).ok_or(ConfigError::NoScaleTag)?;
+        let tag = preset.scale.get(rng).ok_or(ConfigError::NoScaleTag)?;
         let scale = self.scales.iter()
             .filter(|scale| scale.tags.iter().any(|t| t == tag))
             .choose(rng)

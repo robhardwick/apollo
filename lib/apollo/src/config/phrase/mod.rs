@@ -11,6 +11,6 @@ pub struct ConfigPhrase {
     /// A range of values for the number of bars in the phrase
     pub length: ConfigRange<u8>,
 
-    /// The configuration for notes in this phrase
+    /// The note configuration for this phrase
     pub note: ConfigNote,
 }

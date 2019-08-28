@@ -20,12 +20,12 @@ impl Synth {
     pub fn new(config: &ConfigSynth, seed: u64, sample_rate: f32) -> Result<Self, SynthError> {
         let mut rng = SmallRng::seed_from_u64(seed);
         let mut offset = 0f32;
-        let signals: Vec<Signal> = (0..config.num.random(&mut rng)).map(|_| {
-            let signal = config.signal.random(&mut rng).map_or_else(
+        let signals: Vec<Signal> = (0..config.num.get(&mut rng)).map(|_| {
+            let signal = config.signal.get(&mut rng).map_or_else(
                 || Err(SynthError::SignalType),
                 |signal| Ok(Signal::new(signal, offset))
             );
-            offset += config.offset.random(&mut rng);
+            offset += config.offset.get(&mut rng);
             signal
         }).collect::<Result<Vec<_>, _>>()?;
         let size = signals.len() as f32;
