@@ -1,4 +1,5 @@
 mod error;
+mod filter;
 mod signal;
 
 use std::fmt;
@@ -9,13 +10,16 @@ use rand::rngs::SmallRng;
 use crate::config::synth::ConfigSynth;
 use crate::phrase::note::NoteSample;
 use error::SynthError;
+use filter::Filter;
 use signal::Signal;
 
 #[derive(Debug)]
 pub struct Synth {
     sample_rate: f32,
     signals: Vec<Signal>,
+    filter: Filter,
     size: f32,
+    clock: f32,
 }
 
 impl Synth {
@@ -30,21 +34,29 @@ impl Synth {
             offset += config.offset.get(&mut rng);
             signal
         }).collect::<Result<Vec<_>, _>>()?;
+        let filter = Filter::new(
+            config.filter.get(&mut rng).ok_or(SynthError::FilterType)?,
+            &mut rng,
+            sample_rate
+        );
         let size = signals.len() as f32;
 
         Ok(Synth {
             sample_rate,
             signals,
+            filter,
             size,
+            clock: 0.,
         })
     }
 
-    pub fn sample(&self, clock: f32, note: NoteSample) -> f32 {
-        let phase = clock * note.frequency / self.sample_rate;
+    pub fn sample(&mut self, note: NoteSample) -> f32 {
+        self.clock += 1.;
+        let phase = self.clock * note.frequency / self.sample_rate;
         let samples: f32 = self.signals.iter()
             .map(|signal| signal.sample(phase))
             .sum();
-        (samples / self.size) * note.amplitude
+        self.filter.sample(samples / self.size) * note.amplitude
     }
 }
 
@@ -53,6 +65,6 @@ impl fmt::Display for Synth {
         for signal in self.signals.iter() {
             write!(f, "{} ", signal)?;
         }
-        Ok(())
+        write!(f, "{}", self.filter)
     }
 }

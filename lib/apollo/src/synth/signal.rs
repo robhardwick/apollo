@@ -39,9 +39,9 @@ impl Signal {
 impl fmt::Display for Signal {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Signal::Sine { offset } => write!(f, "sine({})", offset),
-            Signal::Saw { offset } => write!(f, "saw({})", offset),
-            Signal::Square { offset } => write!(f, "square({})", offset),
+            Signal::Sine { offset } => write!(f, "sine({:.2})", offset),
+            Signal::Saw { offset } => write!(f, "saw({:.2})", offset),
+            Signal::Square { offset } => write!(f, "square({:.2})", offset),
         }
     }
 }
