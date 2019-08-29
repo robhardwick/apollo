@@ -1,0 +1,22 @@
+language: rust
+
+os:
+  - linux
+  - osx
+
+addons:
+  apt:
+    packages:
+      - libasound2-dev
+
+cache: cargo
+
+install:
+  - cargo build --manifest-path=lib/apollo/Cargo.toml --verbose
+  - cargo build --manifest-path=Cargo.toml --verbose
+
+script:
+  - cargo build --manifest-path=lib/apollo/Cargo.toml --verbose --all
+  - cargo build --manifest-path=Cargo.toml --verbose --all
+  - cargo test --manifest-path=lib/apollo/Cargo.toml --verbose --all
+  - cargo test --manifest-path=Cargo.toml --verbose --all

@@ -3,6 +3,11 @@ mod adsr;
 use crate::config::phrase::note::ConfigNote;
 use adsr::ADSR;
 
+pub const EMPTY_NOTE: NoteSample = NoteSample {
+    frequency: 0.,
+    amplitude: 0.,
+};
+
 #[derive(Debug)]
 pub struct Note {
     pub length: f32,

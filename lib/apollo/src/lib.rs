@@ -47,7 +47,12 @@
 //!             "synth": {
 //!                 "num": 4,
 //!                 "offset": 0.0,
-//!                 "signal": ["sine", "saw"]
+//!                 "signal": ["sine", "saw"],
+//!                 "filter": [{
+//!                     "type": "four_pole",
+//!                     "frequency": 300.0,
+//!                     "resonance": 0.5
+//!                 }]
 //!             }
 //!         }]
 //!     }],
@@ -109,6 +114,7 @@ pub use config::rhythm::ConfigRhythmWeight;
 pub use config::scale::ConfigScale;
 pub use config::synth::ConfigSynth;
 pub use config::synth::ConfigSynthSignal;
+pub use config::synth::ConfigSynthFilter;
 pub use config::track::ConfigTrack;
 
 /// An iterator that produces audio samples
@@ -168,6 +174,10 @@ impl Iterator for Apollo {
 
 impl fmt::Display for Apollo {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Seed: {}\nRhythm: {}\nScale: {}\nTracks: {}", self.seed, self.rhythm, self.scale, self.size)
+        write!(f, "Seed: {}\nRhythm: {}\nScale: {}\n", self.seed, self.rhythm, self.scale)?;
+        for (index, track) in self.tracks.iter().enumerate() {
+            write!(f, "Track {}: {}\n", index + 1, track)?;
+        }
+        Ok(())
     }
 }

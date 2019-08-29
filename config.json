@@ -33,7 +33,7 @@
                     },
                     "adsr": {
                         "amplitude": {
-                            "min": 0.5,
+                            "min": 0.4,
                             "max": 1.0
                         },
                         "attack": {
@@ -54,9 +54,20 @@
                 },
                 "offset": {
                     "min": 0.0,
-                    "max": 100.0
+                    "max": 400.0
                 },
-                "signal": ["sine", "saw", "square"]
+                "signal": ["sine", "saw", "square"],
+                "filter": [{
+                    "type": "four_pole",
+                    "frequency": {
+                        "min": 240.0,
+                        "max": 400.0
+                    },
+                    "resonance": {
+                        "min": 0.0,
+                        "max": 1.5
+                    }
+                }]
             }
         }]
     }],

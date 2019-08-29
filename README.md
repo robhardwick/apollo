@@ -1,6 +1,10 @@
 # Apollo
 
+[![Build Status](https://travis-ci.org/robhardwick/apollo.svg?branch=master)](https://travis-ci.org/robhardwick/apollo) ![License](https://img.shields.io/github/license/robhardwick/apollo)
+
 A generative musical composition and synthesis system written in Rust.
+
+For more information see the [apollo crate documentation](https://robhardwick.github.io/apollo/docs/apollo/index.html).
 
 ## CLI
 ```

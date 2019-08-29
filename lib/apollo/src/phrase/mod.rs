@@ -1,5 +1,7 @@
 pub mod note;
 
+use std::fmt;
+
 use rand::{
     RngCore,
     SeedableRng
@@ -61,5 +63,11 @@ impl Iterator for Phrase {
         }
 
         self.notes[self.position].next()
+    }
+}
+
+impl fmt::Display for Phrase {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{} notes", self.length)
     }
 }
